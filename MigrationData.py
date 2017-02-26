@@ -11,7 +11,10 @@ import csv
 
 import numpy as np
 
-CONTINENTAL_STATE_FIPS = ["01","04","05","06","08","09","10","12","13","16","17","18","19","20","21","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","44","45","46","47","48","49","50","51","53","54","55","56","22"]
+# List of FIPS codes for the 48 continental US states
+CONTINENTAL_STATE_FIPS = ["01","04","05","06","08","09","10","12","13","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","44","45","46","47","48","49","50","51","53","54","55","56"]
+assert len(CONTINENTAL_STATE_FIPS) == 48
+
 
 YEAR_FN_MAP = {
     # year : (dirname, infilename, outfilename),
@@ -28,7 +31,8 @@ YEAR_FN_MAP = {
     2014 : ("county1415","countyinflow1415.csv","countyoutflow1415.csv"),
 }
 
-BASE_RAW_DATA_DIR = "/home/caleb/Dropbox/data/migration"
+# Base directory of IRS Data
+BASE_RAW_DATA_DIR = "/home/caleb/Dropbox/data/migration/USA"
 
 def getRawFnFromYear(year):
     '''
@@ -46,7 +50,7 @@ def getRawFnFromYear(year):
 def getMigrationMatrixRange(startYear,endYear):
     return [getMigrationMatrix(year) for year in range(startYear,endYear)]
 
-def getMigrationMatrix(year, baseDir="output/"):
+def getMigrationMatrix(year, baseDir="output/", verbose=False):
     if year in YEAR_FN_MAP:
         fn = os.path.join(baseDir,"migrationMatrix_%d.npy" % (year))
         if os.path.exists(fn):
@@ -64,8 +68,10 @@ def getMigrationMatrix(year, baseDir="output/"):
  
 
 def processRawMigrationData(year,countyFips=None,verbose=False):
+    
     if countyFips is None:
         countyFips = getCountyList()
+
     countySet = set(countyFips)
     countyFips_Index = {fips:i for i,fips in enumerate(countyFips)}
     n = len(countyFips)
@@ -93,6 +99,7 @@ def processRawMigrationData(year,countyFips=None,verbose=False):
 
             migrationMatrix[countyFips_Index[origin],countyFips_Index[destination]] = val
     
+    # Sanity check, there should not be any u,v in the inRecords that interfere with records from the outRecords
     if verbose:
         print "Found %d repeats" % (repeats)
         print "Error of %d migrants" % (numMigrantsDiscrepancy)
@@ -100,6 +107,11 @@ def processRawMigrationData(year,countyFips=None,verbose=False):
     return migrationMatrix
 
 def parse0408FixedLengthRow(line):
+    ''' This method parses rows from the 2004-2008 IRS migration data.
+    
+    This data is in a fixed width data format where column names are like the following:
+    State_Code_Origin, County_Code_Origin, State_Code_Dest, County_Code_Dest, State_Abbrv, County_Name, Return_Num, Exmpt_Num, Aggr_AGI
+    '''
     returnDict = dict()
 
     returnDict["State_Code_Origin"] = line[0:2].strip()
@@ -115,7 +127,8 @@ def parse0408FixedLengthRow(line):
     return returnDict
 
 def loadFile04_08(fn):
-
+    ''' Method to load 2004-2008 IRS migration data from file.
+    '''
     originSet = set()
     destinationSet = set()
 
@@ -140,7 +153,8 @@ def loadFile04_08(fn):
     return records
 
 def loadFile08_11(fn):
-
+    ''' Method to load 2008-2011 IRS migration data from file.
+    '''
     originSet = set()
     destinationSet = set()
 
@@ -162,7 +176,8 @@ def loadFile08_11(fn):
     return records
 
 def loadFile11_15(fn):
-
+    ''' Method to load 2011-2015 IRS migration data from file.
+    '''
     originSet = set()
     destinationSet = set()
 
@@ -183,14 +198,28 @@ def loadFile11_15(fn):
 
     return records
 
-def getCountyList():
-    f = open("data/countyIntersection.txt")
-    countyFips = map(str,f.read().strip().split("\n"))
+def getCountyList(fn="output/largestCountyIntersection_2004_2014.txt"):
+    '''Loads list of common county FIPS from file. The ordering of this file will be the order of the output migration matrices.
+    '''
+    if not os.path.isfile(fn):
+        raise IOError("File `%s` does not exist. Try running `calculateCommonCounties.py` first." % (fn))
+
+    f = open(fn)
+    lines = f.read().strip().split("\n")
     f.close()
+
+    countyFips = []
+    for line in lines:
+        line = line.strip()
+        if line!="":
+            countyFips.append(line)
+
     return countyFips
 
 
 def loadFile(year):
+    ''' Wrapper method around the individual methods to load migration data from file. Takes as input an year as integer, returns a list of records from the data.
+    '''
     inFn,outFn = getRawFnFromYear(year)
 
     inRecords = None
@@ -207,100 +236,12 @@ def loadFile(year):
 
     return inRecords, outRecords
 
-def generateMigrationStats():
-    import time
-    import matplotlib.pyplot as plt
-    plt.style.use("seaborn-paper")
-
-    xVals = []
-    yVals = []
-
-    f = open("output/migrationStats.csv","w")
-    f.write("Year,Number of counties without outgoing migrants,Number of counties without incoming migrants,Number of counties without incoming or outgoing,Total number of migrants\n")
-    for year in range(2004,2014+1):
-        print "Processing migration matrix for year %d" % (year)
-        print "-" * 40
-        startTime = float(time.time())
-        T = processRawMigrationData(year,verbose=True)
-
-        np.fill_diagonal(T,0)
-
-        rowSums = T.sum(axis=1) 
-        colSums = T.sum(axis=0)
-
-        zeroOutgoing = rowSums==0
-        zeroIncoming = colSums==0
-        zeroBoth = zeroOutgoing & zeroIncoming
-
-        print "Number of counties with no outgoing migrants: \t%d" % zeroOutgoing.sum()
-        print "Number of counties with no incoming migrants: \t%d" % zeroIncoming.sum()
-        print "Number of counties without any migrations:    \t%d" % zeroBoth.sum()
-        print ""
-        print "Total number of migrants: %d" % (T.sum())
-
-        f.write("%d,%d,%d,%d,%d\n" % (year, zeroOutgoing.sum(), zeroIncoming.sum(), zeroBoth.sum(), T.sum()))
-
-        xVals.append(year)
-        yVals.append(T.sum())
-
-        print "Finished loading and saving raw migration data for %d in %0.4f seconds" % (year, time.time()-startTime)
-        print "\n\n"
-    f.close()
-
-    # Plot the total number of migrants for each year
-    plt.figure(figsize=(6,4))
-    plt.plot(xVals,yVals)
-    plt.title("Number of migrations over time")
-    plt.xlabel("Year")
-    plt.ylabel("Number of migrations")
-    plt.savefig("output/numberOfMigrationsOverTime.png",dpi=150,bbox_inches='tight',pad_inches=0)
-    plt.close()
-
-
-def getLargestFipsOverlap(startYear,verbose=False):
-    
-    fipsSets = []
-
-    for year in range(startYear,2015):
-        inRecords,outRecords = loadFile(year)
-
-        fipsSet = set()
-        for origin,destination,val in inRecords:
-            fipsSet.add(origin)
-            fipsSet.add(destination)
-        for origin,destination,val in outRecords:
-            fipsSet.add(origin)
-            fipsSet.add(destination)
-        if verbose:
-            print "%d -- %d counties" % (year, len(fipsSet)) 
-        fipsSets.append(fipsSet)
-
-    joinedSet = set(fipsSets[0])
-    for s in fipsSets[1:]:
-        joinedSet.intersection_update(s)
-    
-    print "Total of %d locations in common to all years" % (len(joinedSet))
-
-    f = open("output/largestCountyIntersection_%d_2014_allLocations.txt" % (startYear), "w")
-    for countyFips in list(joinedSet):
-        f.write("%s\n" % (countyFips))
-    f.close()
-
-    print "Checking to see how many locations are in the %d CONTINENTAL_STATE_FIPS and not summary codes" % (len(CONTINENTAL_STATE_FIPS))
-    filteredJoinedSet = set()
-    for countyFips in joinedSet:
-        stateCode = countyFips[:2]
-        countyCode = countyFips[2:]
-        if stateCode in CONTINENTAL_STATE_FIPS and countyCode!="000":
-            filteredJoinedSet.add(countyFips)
-
-    f = open("output/largestCountyIntersection_%d_2014_stateLocations.txt" % (startYear), "w")
-    filteredJoined = {countyFips:int(countyFips) for countyFips in list(filteredJoinedSet)}
-    filteredJoinedList = sorted(filteredJoined, key=filteredJoined.get)
-    for countyFips in filteredJoinedList:
-        f.write("%s\n" % (countyFips))
-    f.close()
-    print "Total of %d locations in continental states that are common to all years" % (len(filteredJoinedSet))
-
 if __name__ == "__main__":
-    pass
+    import time
+    print "Generating output migration matrices in ./output/"
+    startTime = float(time.time())
+
+    for year in range(2004,2014+1):
+        T = getMigrationMatrix(year, baseDir="./output/", verbose=True)
+
+    print "Finished generating output matrices in %0.4f seconds" % (time.time() - startTime)
