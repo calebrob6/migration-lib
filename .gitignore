@@ -90,3 +90,5 @@ ENV/
 
 .vscode/
 output/migrationMatrix*
+data/USA
+data/GLOBAL

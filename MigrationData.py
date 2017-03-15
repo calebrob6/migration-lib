@@ -32,7 +32,7 @@ YEAR_FN_MAP = {
 }
 
 # Base directory of IRS Data
-BASE_RAW_DATA_DIR = "/home/caleb/Dropbox/data/migration/USA"
+BASE_RAW_DATA_DIR = "data/USA"
 
 def getRawFnFromYear(year):
     '''
