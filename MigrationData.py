@@ -47,12 +47,14 @@ def getRawFnFromYear(year):
     else:
         raise ValueError("Year %d out of range" % (year))
 
+
 def getMigrationMatrixRange(startYear,endYear):
     return [getMigrationMatrix(year) for year in range(startYear,endYear)]
 
+
 def getMigrationMatrix(year, baseDir="output/", verbose=False):
     if year in YEAR_FN_MAP:
-        fn = os.path.join(baseDir,"migrationMatrix_%d.npy" % (year))
+        fn = os.path.join(baseDir,"usa_migrationMatrix_%d.npy" % (year))
         if os.path.exists(fn):
             return np.load(fn)
         else: #Make the file
@@ -65,7 +67,7 @@ def getMigrationMatrix(year, baseDir="output/", verbose=False):
             return T
     else:
         raise ValueError("Year %d out of range" % (year))
- 
+
 
 def processRawMigrationData(year,countyFips=None,verbose=False):
     
@@ -106,6 +108,7 @@ def processRawMigrationData(year,countyFips=None,verbose=False):
 
     return migrationMatrix
 
+
 def parse0408FixedLengthRow(line):
     ''' This method parses rows from the 2004-2008 IRS migration data.
     
@@ -125,6 +128,7 @@ def parse0408FixedLengthRow(line):
     returnDict["Aggr_AGI"] = line[71:82].strip()
     
     return returnDict
+
 
 def loadFile04_08(fn):
     ''' Method to load 2004-2008 IRS migration data from file.
@@ -152,6 +156,7 @@ def loadFile04_08(fn):
 
     return records
 
+
 def loadFile08_11(fn):
     ''' Method to load 2008-2011 IRS migration data from file.
     '''
@@ -175,6 +180,7 @@ def loadFile08_11(fn):
 
     return records
 
+
 def loadFile11_15(fn):
     ''' Method to load 2011-2015 IRS migration data from file.
     '''
@@ -197,6 +203,7 @@ def loadFile11_15(fn):
     f.close()
 
     return records
+
 
 def getCountyList(fn="output/largestCountyIntersection_2004_2014.txt"):
     '''Loads list of common county FIPS from file. The ordering of this file will be the order of the output migration matrices.
@@ -235,6 +242,7 @@ def loadFile(year):
         outRecords = loadFile11_15(outFn)
 
     return inRecords, outRecords
+
 
 if __name__ == "__main__":
     import time
