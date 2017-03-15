@@ -12,7 +12,7 @@ This script calculates which FIPS are shared between all of the years of migrati
 
 Creates output/largestCountyIntersection_2004_2014.txt which is a numerically sorted list of FIPS codes in the continental USA that are common across all years of data.
 '''
-from MigrationData import loadFile
+from MigrationDataUSA import loadFile
 
 # List of state prefixes for the FIPS codes of the 48 continental US states
 CONTINENTAL_STATE_FIPS = ["01","04","05","06","08","09","10","12","13","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","44","45","46","47","48","49","50","51","53","54","55","56"]

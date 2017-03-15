@@ -6,11 +6,11 @@
 #
 # Distributed under terms of the MIT license.
 '''
-Usage: python getMigrationStats.py
+Usage: python getUSAMigrationStats.py
 
-This script calculates year by year global statistics on the migration data, and graphs the total number of migrants over time.
+This script calculates year by year global statistics on the USA migration data, and graphs the total number of migrants over time.
 
-It writes output/migrationStats.csv and output/numberOfMigrationsOverTime.png
+It writes output/USA/migrationStats.csv and output/USA/numberOfMigrationsOverTime.png
 '''
 
 import time
@@ -19,13 +19,13 @@ plt.style.use("seaborn-paper")
 
 import numpy as np
 
-from MigrationData import getMigrationMatrix
+from MigrationDataUSA import getMigrationMatrix
 
 def main():
     years = range(2004,2014+1)
     totalNumberOfMigrants = []
 
-    f = open("output/migrationStats.csv","w")
+    f = open("output/USA/migrationStats.csv","w")
     f.write("Year,Number of counties without outgoing migrants,Number of counties without incoming migrants,Number of counties without incoming or outgoing,Total number of migrants\n")
     for year in years:
         print "Processing migration matrix for year %d" % (year)
@@ -64,7 +64,7 @@ def main():
     plt.xlabel("Year")
     plt.ylabel("Number of migrants")
     plt.savefig(
-        "output/numberOfMigrationsOverTime.png",
+        "output/USA/numberOfMigrationsOverTime.png",
         dpi=150,
         bbox_inches='tight',
         pad_inches=0

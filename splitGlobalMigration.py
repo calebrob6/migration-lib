@@ -10,6 +10,7 @@ Usage: python splitGlobalMigration.py
 
 This file splits the World Bank Global Bilateral Migration Database data into yearly chunks.
 '''
+
 import sys
 import os
 import time

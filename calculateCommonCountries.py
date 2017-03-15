@@ -12,7 +12,7 @@ This script calculates which country codes are shared between all of the years o
 
 Creates output/global_country_list.txt which is an alphabetically sorted list of country codes in the World Bank Bilateral Migration Data that are common across all years of data.
 '''
-from MigrationDataWorldBank import loadFile
+from MigrationDataGlobal import loadFile
 
 def main():
     step = 10
