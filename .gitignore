@@ -2,5 +2,7 @@
 .ipynb_checkpoints
 .vscode
 
-output/migrationMatrix*
+output/usa_migrationMatrix*
+output/global_migrationMatrix*
 data/USA
+data/GLOBAL
