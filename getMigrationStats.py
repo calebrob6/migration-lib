@@ -41,7 +41,7 @@ def main():
 
         zeroOutgoing = rowSums==0
         zeroIncoming = colSums==0
-        zeroBoth = zeroOutgoing & zeroIncoming # when a county has 0 outgoing and 0 incoming migrants
+        zeroBoth = zeroOutgoing & zeroIncoming # mask for when a county has 0 outgoing and 0 incoming migrants
 
         print "Number of counties with no outgoing migrants: \t%d" % zeroOutgoing.sum()
         print "Number of counties with no incoming migrants: \t%d" % zeroIncoming.sum()
