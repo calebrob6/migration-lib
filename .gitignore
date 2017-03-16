@@ -2,10 +2,8 @@
 .ipynb_checkpoints
 .vscode
 
-output/usa_migrationMatrix*
-output/global_migrationMatrix*
-output/usa_features*
-output/global_features*
+output/*.p
+output/*.npy
 
 data/MIGRATION/
 data/FEATURES/
