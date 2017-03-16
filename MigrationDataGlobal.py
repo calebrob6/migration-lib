@@ -41,10 +41,10 @@ def getMigrationMatrixRange(startYear,endYear,step=10):
     return [getMigrationMatrix(year) for year in range(startYear,endYear,step)]
 
 
-def getMigrationMatrix(year, baseDir="output/", verbose=False):
+def getMigrationMatrix(year, baseDir="output/", cacheAware=True, verbose=False):
     if year in YEAR_FN_MAP:
         fn = os.path.join(baseDir,"global_migrationMatrix_%d.npy" % (year))
-        if os.path.exists(fn):
+        if os.path.exists(fn) and cacheAware:
             return np.load(fn)
         else: #Make the file
             outputBase = os.path.dirname(fn)
@@ -65,6 +65,7 @@ def processRawMigrationData(year,countryCodes=None,verbose=False):
 
     countrySet = set(countryCodes)
     countryCodes_Index = {code:i for i,code in enumerate(countryCodes)}
+    assert len(countrySet) == len(countryCodes), "List of countries should not have duplicates"
     n = len(countryCodes)
 
     migrationMatrix = np.zeros((n,n), dtype=np.int)

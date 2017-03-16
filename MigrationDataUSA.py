@@ -52,10 +52,10 @@ def getMigrationMatrixRange(startYear,endYear):
     return [getMigrationMatrix(year) for year in range(startYear,endYear)]
 
 
-def getMigrationMatrix(year, baseDir="output/", verbose=False):
+def getMigrationMatrix(year, baseDir="output/", cacheAware=True, verbose=False):
     if year in YEAR_FN_MAP:
         fn = os.path.join(baseDir,"usa_migrationMatrix_%d.npy" % (year))
-        if os.path.exists(fn):
+        if os.path.exists(fn) and cacheAware:
             return np.load(fn)
         else: #Make the file
             outputBase = os.path.dirname(fn)
@@ -76,6 +76,7 @@ def processRawMigrationData(year,countyFips=None,verbose=False):
 
     countySet = set(countyFips)
     countyFips_Index = {fips:i for i,fips in enumerate(countyFips)}
+    assert len(countySet) == len(countyFips), "List of counties should not have duplicates"
     n = len(countyFips)
 
     migrationMatrix = np.zeros((n,n), dtype=np.int)
