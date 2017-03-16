@@ -11,12 +11,12 @@ We do not directly include the datasets that go with this library in this reposi
 
 ## Getting the IRS Tax Stats Migration data
 
-In order to use `MigrationDataUSA.py` you will need to download the appropriate data, format it, and put it in the `data/USA/` directory.
+In order to use `MigrationDataUSA.py` you will need to download the appropriate data, format it, and put it in the `data/MIGRATION/USA/` directory.
 
 There are two good ways to do this.
-1. You can download [our copy of the pre-packaged data](https://dl.dropboxusercontent.com/u/45223629/USA.zip), and unzip it to `data/USA/`.
+1. You can download [our copy of the pre-packaged data](https://dl.dropboxusercontent.com/u/45223629/USA.zip), and unzip it to `data/MIGRATION/USA/`.
 
-2. You can download the individual county-to-county zip files provided on the [Tax Stats webpage](https://www.irs.gov/uac/soi-tax-stats-migration-data). `MigrationDataUSA.py` expects to find the data such as `data/USA/<year>/<countyInFlows>` and `data/USA/<year>/<countyOutFlows>`. See `YEAR_FN_MAP` in `MigrationDataUSA.py` for how to name all the files (or as the place to edit to suit your needs). The 2005-2006 data is a special case with more details below.
+2. You can download the individual county-to-county zip files provided on the [Tax Stats webpage](https://www.irs.gov/uac/soi-tax-stats-migration-data). `MigrationDataUSA.py` expects to find the data such as `data/MIGRATION/USA/<year>/<countyInFlows>` and `data/MIGRATION/USA/<year>/<countyOutFlows>`. See `YEAR_FN_MAP` in `MigrationDataUSA.py` for how to name all the files (or as the place to edit to suit your needs). The 2005-2006 data is a special case with more details below.
 
 ### USA 2005-2006 Migration Flows Caveat
 
@@ -24,10 +24,10 @@ The 2005-2006 County-to-County migration flows from the IRS website are incomple
 
 ## Getting the World Bank Global Bilateral Migration data
 
-In order to use `MigrationDataGlobal.py` you will need to download the appropriate data, format it, and put it in the `data/GLOBAL/` directory.
+In order to use `MigrationDataGlobal.py` you will need to download the appropriate data, format it, and put it in the `data/MIGRATION/GLOBAL/` directory.
 
 There are two good ways to do this.
-1. You can download [our copy of the pre-packaged data](https://dl.dropboxusercontent.com/u/45223629/GLOBAL.zip), and unzip it to `data/GLOBAL/`.
+1. You can download [our copy of the pre-packaged data](https://dl.dropboxusercontent.com/u/45223629/GLOBAL.zip), and unzip it to `data/MIGRATION/GLOBAL/`.
 2. You can download the raw data from [http://databank.worldbank.org/data/reports.aspx?source=global-bilateral-migration](http://databank.worldbank.org/data/reports.aspx?source=global-bilateral-migration).
     - Select all countries in the "Country Origin" option panel
     - Select all countries in the "Country Dest" option panel
@@ -36,4 +36,4 @@ There are two good ways to do this.
     - Select "row", "column", "row", "page" as the options for the "Year", "Country Dest", "Country Origin", and "Migration by Gender" dropdowns respectively (in the "Layout" tab)
     - Download as an Excel file
     - Remove the two bottom most rows with the metadata content: "Data from database: Global Bilateral Migration", "Last Updated: ..."
-    - Save as a CSV file, `data/GLOBAL/migrationData.csv` with pipe delimiters (use the '|' character as a delimiter... or change the `MigrationDataGlobal.py` code)
+    - Save as a CSV file, `data/MIGRATION/GLOBAL/migrationData.csv` with pipe delimiters (use the '|' character as a delimiter... or change the `MigrationDataGlobal.py` code)

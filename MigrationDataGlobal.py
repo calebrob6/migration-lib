@@ -21,7 +21,7 @@ YEAR_FN_MAP = {
 }
 
 # Base directory of World Bank Global Bilateral Migration data
-BASE_RAW_DATA_DIR = "data/GLOBAL"
+BASE_RAW_DATA_DIR = "data/MIGRATION/GLOBAL"
 
 
 def getRawFnFromYear(year):

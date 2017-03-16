@@ -40,7 +40,7 @@ def main():
     print 'Starting global migration data parser'
     startTime = float(time.time())
 
-    header, data = loadCSV("data/GLOBAL/migrationData.csv", header=True, DELIM='|')
+    header, data = loadCSV("data/MIGRATION/GLOBAL/migrationData.csv", header=True, DELIM='|')
     #print header
 
     dataYears = dict()
@@ -52,7 +52,7 @@ def main():
     
     for year,rows in dataYears.items():
         print "Writing file for %s" % (year)
-        f = open("data/GLOBAL/migrations_%s.csv" % (year), "w")
+        f = open("data/MIGRATION/GLOBAL/migrations_%s.csv" % (year), "w")
         f.write("%s\n" % ('|'.join(header)))
         for row in rows:
             f.write("%s\n" % ('|'.join(row)))

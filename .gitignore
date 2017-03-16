@@ -4,5 +4,5 @@
 
 output/usa_migrationMatrix*
 output/global_migrationMatrix*
-data/USA
-data/GLOBAL
+data/MIGRATION/
+data/FEATURES/

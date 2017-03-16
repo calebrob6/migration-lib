@@ -88,3 +88,6 @@ def nrmse(O,G):
     
     return np.sqrt(numerator/denominator)
 
+
+if __name__ == "__main__":
+    pass
