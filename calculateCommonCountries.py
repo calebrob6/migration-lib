@@ -24,6 +24,9 @@ def main():
 
         countryCodeSet = set()
         for origin,destination,val in records:
+            #origin = origin[-4:-1]
+            #destination = destination[-4:-1]            
+
             countryCodeSet.add(origin)
             countryCodeSet.add(destination)
         countryCodeSets.append(countryCodeSet)

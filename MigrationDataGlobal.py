@@ -154,5 +154,6 @@ if __name__ == "__main__":
 
     for year in range(1960,2000+10,10):
         T = getMigrationMatrix(year, baseDir="./output/", verbose=True)
+        print year, T.sum()
 
     print "Finished generating output matrices in %0.4f seconds" % (time.time() - startTime)

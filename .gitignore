@@ -7,3 +7,4 @@ output/*.npy
 
 data/MIGRATION/
 data/FEATURES/
+data/shapefiles/

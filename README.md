@@ -37,3 +37,9 @@ There are two good ways to do this.
     - Download as an Excel file
     - Remove the two bottom most rows with the metadata content: "Data from database: Global Bilateral Migration", "Last Updated: ..."
     - Save as a CSV file, `data/MIGRATION/GLOBAL/migrationData.csv` with pipe delimiters (use the '|' character as a delimiter... or change the `MigrationDataGlobal.py` code)
+
+
+
+# Shapefile Data
+
+https://www.arcgis.com/home/item.html?id=3864c63872d84aec91933618e3815dd2
