@@ -61,11 +61,11 @@ def getDataDict(year):
 
 #-----------------------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------------------
-def getFeatureRangeWithCommonFeatures(startYear, endYear, featureList=None, cacheAware=True):
-    dataFrames = getFeatureRange(startYear, endYear, cacheAware=cacheAware)
+def getFeatureRangeWithCommonFeatures(startYear, endYear, step=10, featureList=None, cacheAware=True):
+    dataFrames = getFeatureRange(startYear, endYear, step=step, cacheAware=cacheAware)
 
     if featureList is None:
-        featureList = getCommonColumnNames(startYear,endYear)
+        featureList = getCommonColumnNames(startYear,endYear,step)
 
     for i in range(len(dataFrames)):
         dataFrames[i] = dataFrames[i][featureList].copy()
@@ -78,8 +78,8 @@ def getFeatureRangeWithCommonFeatures(startYear, endYear, featureList=None, cach
 
 #-----------------------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------------------
-def getFeatureRange(startYear, endYear, cacheAware=True):
-    return [getFeatures(year, cacheAware=cacheAware) for year in range(startYear,endYear)]
+def getFeatureRange(startYear, endYear, step=10, cacheAware=True):
+    return [getFeatures(year, cacheAware=cacheAware) for year in range(startYear,endYear,step)]
 
 
 def getFeatures(year, baseDir="output/", cacheAware=True, verbose=False):
@@ -131,17 +131,17 @@ def processRawWDIData(year, countryCodes=None, verbose=False):
     f = open(fn,"r")
     headerLine = f.readline().strip().split("|")
     recognizedCodes = set()
-    notRecognizedCodes = set() 
+    notRecognizedCodes = set()
     reader = csv.reader(f, delimiter="|")
     for row in reader:
         Country_Name, Country_Code, Series_Name, Series_Code, dataVal = row
 
-        countryCode = "%s [%s]" % (Country_Name, Country_Code)
+        countryCode = "%s" % (Country_Code)
 
         if countryCode in countrySet:
             val = None
             if dataVal=="..":
-                val = np.NaN
+                val = None
             else:
                 val = float(dataVal)
             featureMatrix[countryCodes_Index[countryCode], featureName_Index[Series_Code]] = val
@@ -150,9 +150,9 @@ def processRawWDIData(year, countryCodes=None, verbose=False):
             notRecognizedCodes.add(countryCode)
     f.close()
 
-    for code in countrySet-recognizedCodes:
-        print code
-    print len(countrySet) - len(recognizedCodes)
+    #print notRecognizedCodes
+    print countrySet - recognizedCodes
+    assert len(countrySet) - len(recognizedCodes) == 0
 
     featureFrame = pd.DataFrame(featureMatrix, columns=featureList, index=countryCodes)
     return featureFrame
@@ -169,8 +169,8 @@ def dataDictLookup(dd, field):
 
 #-----------------------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------------------
-def getCommonColumnNames(startYear,endYear):
-    dfs = getFeatureRange(startYear,endYear)
+def getCommonColumnNames(startYear, endYear, step=10):
+    dfs = getFeatureRange(startYear,endYear,step=step)
     columnSets = [set(df.columns) for df in dfs]
     uniqueSet = columnSets[0]
     for s in columnSets[1:]:
@@ -181,10 +181,10 @@ def getCommonColumnNames(startYear,endYear):
 
 #-----------------------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------------------
-def getCommonColumnHumanReadableNames(startYear,endYear):
-    uniqueColumns = getCommonColumnNames(startYear,endYear)
+def getCommonColumnHumanReadableNames(startYear, endYear, step=10):
+    uniqueColumns = getCommonColumnNames(startYear,endYear,step)
 
-    dataDictionaries = [getDataDict(year) for year in range(startYear,endYear)]
+    dataDictionaries = [getDataDict(year) for year in range(startYear,endYear,step)]
     mergedDataDictionary = {}
 
     for columnName in uniqueColumns:
@@ -219,11 +219,25 @@ def getCountryList(fn="output/global_country_list.txt"):
     for line in lines:
         line = line.strip()
         if line!="":
-            countryCodes.append(line)
+            parts = line.split("|")
+            countryCodes.append(parts[1])
 
     return countryCodes
 
 if __name__ == "__main__":
     
+    dataFrames, featureList = getFeatureRangeWithCommonFeatures(1970,2001)
+    humanReadable = getCommonColumnHumanReadableNames(1970,2001)
+    
 
-    df = processRawWDIData(1970)
+    featureMap = {featureCode : 1.0 for featureCode in featureList}
+    for df in dataFrames:
+        nullVals = np.isnan(df.as_matrix())
+        percentNulls = nullVals.sum(axis=0) / 203.0
+        for i, percentVal in enumerate(percentNulls):
+            featureMap[featureList[i]] = min(featureMap[featureList[i]], percentVal)
+
+
+    sortedFeatures = sorted(featureMap, key=featureMap.get)
+    for i in range(20):
+        print i, featureMap[sortedFeatures[i]], humanReadable[sortedFeatures[i]], sortedFeatures[i]

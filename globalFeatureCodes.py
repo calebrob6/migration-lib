@@ -36,27 +36,20 @@ def main():
     print 'Starting %s' % (progName)
     startTime = float(time.time())
 
-    shapefileDataHeader, shapefileData = loadCSV("data/shapefiles/GLOBAL/world2.csv", header=True, DELIM=",", QUOTECHAR='"')
-    #print shapefileDataHeader
-    shapefileCodeNames = {}
-    shapefileCountryCodes = set()
-    for row in shapefileData:
-        shapefileCountryCodes.add(row[1])
-        shapefileCodeNames[row[1]] = row[0]
 
     f = open("output/global_country_list.txt","r")
     migrationData = f.read().strip().split("\n")
     migrationCodeNames = {}
     migrationCountryCodes = set()
     for row in migrationData:
-        countryName = row[:-5].strip()
-        countryCode = row[-4:-1].strip()
+        parts = row.split("|")
+        countryName = parts[0]
+        countryCode = parts[1]
         migrationCountryCodes.add(countryCode)
         migrationCodeNames[countryCode] = countryName
     f.close()
 
     featureDataHeader, featureData = loadCSV("data/FEATURES/GLOBAL/worldFeatures_allYears.csv", header=True, DELIM="|", QUOTECHAR='"')
-    #print featureDataHeader
     featureCodeNames = {}
     featureCountryCodes = set()
     for row in featureData:
@@ -71,22 +64,16 @@ def main():
     #print len(migrationCountryCodes)
     #print len(featureCountryCodes)
 
-    allSets = [shapefileCountryCodes,migrationCountryCodes,featureCountryCodes]
+    allSets = [migrationCountryCodes,featureCountryCodes]
     joinedSet = set(allSets[0])
     for s in allSets[1:]:
         joinedSet.intersection_update(s)
     
     f = open("temp.csv","w")
-    for code in joinedSet:
-        f.write("%s|%s|%s|%s\n" % (code, shapefileCodeNames[code], migrationCodeNames[code], featureCodeNames[code]))
+    for code in sorted(list(joinedSet)):
+        f.write("%s|%s\n" % (migrationCodeNames[code], code))
     f.close()
 
-
-    print "Shapefile Codes Difference"
-    for code in shapefileCountryCodes - joinedSet:
-        print code, "\t", shapefileCodeNames[code]
-
-    print "\n\n"
 
     print "Migration Codes Difference"
     for code in migrationCountryCodes - joinedSet:
@@ -97,8 +84,6 @@ def main():
     print "Feature Codes Difference"
     for code in featureCountryCodes - joinedSet:
         print code, "\t", featureCodeNames[code]
-
-
 
     print len(joinedSet)
 

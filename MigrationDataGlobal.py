@@ -100,10 +100,10 @@ def loadGlobalBilateralMigration(fn):
     for row in reader:
         assert len(row) == len(headerLine)
 
-        origin = "%s [%s]" % (row[4], row[5])
+        origin = "%s" % (row[5])
 
         for j in range(6,len(row)):
-            destination = headerLine[j]
+            destination = headerLine[j][-4:-1]
 
             val = None
             if row[j] == "..":
@@ -132,7 +132,8 @@ def getCountryList(fn="output/global_country_list.txt"):
     for line in lines:
         line = line.strip()
         if line!="":
-            countryCodes.append(line)
+            parts = line.split("|")
+            countryCodes.append(parts[1])
 
     return countryCodes
 
@@ -149,6 +150,7 @@ def loadFile(year):
 
 if __name__ == "__main__":
     import time
+
     print "Generating output migration matrices in ./output/"
     startTime = float(time.time())
 
@@ -157,3 +159,4 @@ if __name__ == "__main__":
         print year, T.sum()
 
     print "Finished generating output matrices in %0.4f seconds" % (time.time() - startTime)
+    
