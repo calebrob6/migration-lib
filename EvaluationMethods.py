@@ -88,6 +88,20 @@ def nrmse(O,G):
     
     return np.sqrt(numerator/denominator)
 
+#-----------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------
+def rmse(O,G):
+    '''Calcuates the root mean squared error between the generated matrix, G, and the observed matrix, O.
+     
+    returns: root mean squared value
+    '''
+    assert len(G.shape) == 2 and len(O.shape) == 2
+    assert G.shape[0] == O.shape[0] and G.shape[1] == O.shape[1]
+ 
+    numerator = np.sum((O-G)**2)
+    denominator = float(O.shape[0] * O.shape[1])
+     
+    return np.sqrt(numerator/denominator)
 
 if __name__ == "__main__":
     pass
