@@ -28,6 +28,13 @@ REGION_NAMES = {
     "West": 3
 }
 
+REGION_NAMES_LIST = [
+    "Northeast",
+    "Midwest",
+    "South",
+    "West"
+]
+
 DIVISION_NAMES = {
     "New England": 0,
     "Middle Atlantic": 1,
@@ -39,6 +46,18 @@ DIVISION_NAMES = {
     "Mountain": 7,
     "Pacific": 8
 } 
+
+DIVISION_NAMES_LIST = [
+    "New England",
+    "Middle Atlantic",
+    "East North Central",
+    "West North Central",
+    "South Atlantic",
+    "East South Central",
+    "West South Central",
+    "Mountain",
+    "Pacific"
+]
 
 def getRegion(fips):
     '''Returns the region that a particular county fips is from.'''
