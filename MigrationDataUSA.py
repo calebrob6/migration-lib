@@ -104,8 +104,8 @@ def processRawMigrationData(year,countyFips=None,verbose=False):
     
     # Sanity check, there should not be any u,v in the inRecords that interfere with records from the outRecords
     if verbose:
-        print "Found %d repeats" % (repeats)
-        print "Error of %d migrants" % (numMigrantsDiscrepancy)
+        print("Found %d repeats" % (repeats))
+        print("Error of %d migrants" % (numMigrantsDiscrepancy))
 
     return migrationMatrix
 
@@ -247,10 +247,10 @@ def loadFile(year):
 
 if __name__ == "__main__":
     import time
-    print "Generating output migration matrices in ./output/"
+    print("Generating output migration matrices in ./output/")
     startTime = float(time.time())
 
     for year in range(2004,2014+1):
         T = getMigrationMatrix(year, baseDir="./output/", verbose=True)
 
-    print "Finished generating output matrices in %0.4f seconds" % (time.time() - startTime)
+    print("Finished generating output matrices in %0.4f seconds" % (time.time() - startTime))

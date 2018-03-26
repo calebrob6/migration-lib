@@ -151,7 +151,7 @@ def processRawWDIData(year, countryCodes=None, verbose=False):
     f.close()
 
     #print notRecognizedCodes
-    print countrySet - recognizedCodes
+    print(countrySet - recognizedCodes)
     assert len(countrySet) - len(recognizedCodes) == 0
 
     featureFrame = pd.DataFrame(featureMatrix, columns=featureList, index=countryCodes)
@@ -219,8 +219,7 @@ def getCountryList(fn="output/global_country_list.txt"):
     for line in lines:
         line = line.strip()
         if line!="":
-            parts = line.split("|")
-            countryCodes.append(parts[1])
+            countryCodes.append(line)
 
     return countryCodes
 
@@ -240,4 +239,4 @@ if __name__ == "__main__":
 
     sortedFeatures = sorted(featureMap, key=featureMap.get)
     for i in range(20):
-        print i, featureMap[sortedFeatures[i]], humanReadable[sortedFeatures[i]], sortedFeatures[i]
+        print(i, featureMap[sortedFeatures[i]], humanReadable[sortedFeatures[i]], sortedFeatures[i])

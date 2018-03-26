@@ -84,7 +84,7 @@ def processRawMigrationData(year,countryCodes=None,verbose=False):
     
     # Sanity check, there should not be any u,v in the inRecords that interfere with records from the outRecords
     if verbose:
-        print "Found %d repeats" % (repeats)
+        print("Found %d repeats" % (repeats))
 
     return migrationMatrix
 
@@ -132,8 +132,7 @@ def getCountryList(fn="output/global_country_list.txt"):
     for line in lines:
         line = line.strip()
         if line!="":
-            parts = line.split("|")
-            countryCodes.append(parts[1])
+            countryCodes.append(line)
 
     return countryCodes
 
@@ -151,12 +150,12 @@ def loadFile(year):
 if __name__ == "__main__":
     import time
 
-    print "Generating output migration matrices in ./output/"
+    print("Generating output migration matrices in ./output/")
     startTime = float(time.time())
 
     for year in range(1960,2000+10,10):
         T = getMigrationMatrix(year, baseDir="./output/", verbose=True)
-        print year, T.sum()
+        print(year, T.sum())
 
-    print "Finished generating output matrices in %0.4f seconds" % (time.time() - startTime)
+    print("Finished generating output matrices in %0.4f seconds" % (time.time() - startTime))
     

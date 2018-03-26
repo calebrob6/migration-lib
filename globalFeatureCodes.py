@@ -33,7 +33,7 @@ def loadCSV(fn, header=False, DELIM='|', QUOTECHAR=None):
 #---------------------------------------------------------------------------------------------------
 def main():
     progName = 'Make sense of country codes'
-    print 'Starting %s' % (progName)
+    print('Starting %s' % (progName))
     startTime = float(time.time())
 
 
@@ -56,13 +56,13 @@ def main():
         featureCountryCodes.add(row[1])
         featureCodeNames[row[1]] = row[0]
 
-    #print shapefileCountryCodes 
-    #print migrationCountryCodes
-    #print featureCountryCodes
+    #print(shapefileCountryCodes)
+    #print(migrationCountryCodes)
+    #print(featureCountryCodes)
 
-    #print len(shapefileCountryCodes)
-    #print len(migrationCountryCodes)
-    #print len(featureCountryCodes)
+    #print(len(shapefileCountryCodes))
+    #print(len(migrationCountryCodes))
+    #print(len(featureCountryCodes))
 
     allSets = [migrationCountryCodes,featureCountryCodes]
     joinedSet = set(allSets[0])
@@ -75,19 +75,19 @@ def main():
     f.close()
 
 
-    print "Migration Codes Difference"
+    print("Migration Codes Difference")
     for code in migrationCountryCodes - joinedSet:
-        print code, "\t", migrationCodeNames[code]
+        print(code, "\t", migrationCodeNames[code])
 
-    print "\n\n"
+    print("\n\n")
 
-    print "Feature Codes Difference"
+    print("Feature Codes Difference")
     for code in featureCountryCodes - joinedSet:
-        print code, "\t", featureCodeNames[code]
+        print(code, "\t", featureCodeNames[code])
 
-    print len(joinedSet)
+    print(len(joinedSet))
 
-    print 'Finished in %0.4f seconds' % (time.time() - startTime)
+    print('Finished in %0.4f seconds' % (time.time() - startTime))
 
 if __name__ == '__main__':
     #sys.argv = ['programName.py','--input','test.txt','--output','tmp/test.txt']

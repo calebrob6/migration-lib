@@ -40,18 +40,18 @@ def main():
             #perform filtering here
             newCountryCodeSet.add(countryCode)
 
-        print "%d -- %d countries" % (year, len(newCountryCodeSet)) 
+        print("%d -- %d countries" % (year, len(newCountryCodeSet)))
         newCountryCodeSets.append(newCountryCodeSet)
 
-    print ""
+    print("")
 
     # calculate the intersection of all sets
     joinedSet = set(newCountryCodeSets[0])
     for s in newCountryCodeSets[1:]:
         joinedSet.intersection_update(s)
-    print "Total of %d countries that are common to all years of data." % (len(joinedSet))
+    print("Total of %d countries that are common to all years of data." % (len(joinedSet)))
 
-    print ""
+    print("")
 
     # sort FIPS code in numerical order
     joinedList = list(joinedSet)
@@ -59,15 +59,15 @@ def main():
 
     # write output
     outputFn = "output/global_country_list.txt"
-    print "Saving list of country codes common to all years of data to %s" % (outputFn)
+    print("Saving list of country codes common to all years of data to %s" % (outputFn))
     f = open(outputFn, "w")
     for countryCode in sortedJoinedList:
         f.write("%s\n" % (countryCode))
     f.close()
     
-    print "Finished"
+    print("Finished")
 
 if __name__ == '__main__':
-    print __doc__
-    print ""
+    print(__doc__)
+    print("")
     main()

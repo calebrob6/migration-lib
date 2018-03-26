@@ -37,11 +37,11 @@ def loadCSV(fn, header=False, DELIM='|', QUOTECHAR=None):
 
 #---------------------------------------------------------------------------------------------------
 def main():
-    print 'Starting global migration data parser'
+    print('Starting global migration data parser')
     startTime = float(time.time())
 
     header, data = loadCSV("data/MIGRATION/GLOBAL/migrationData.csv", header=True, DELIM='|')
-    #print header
+    #print(header)
 
     dataYears = dict()
     for row in data:
@@ -51,16 +51,16 @@ def main():
         dataYears[year].append(row)
     
     for year,rows in dataYears.items():
-        print "Writing file for %s" % (year)
+        print("Writing file for %s" % (year))
         f = open("data/MIGRATION/GLOBAL/migrations_%s.csv" % (year), "w")
         f.write("%s\n" % ('|'.join(header)))
         for row in rows:
             f.write("%s\n" % ('|'.join(row)))
         f.close()
    
-    print 'Finished in %0.4f seconds' % (time.time() - startTime)
+    print('Finished in %0.4f seconds' % (time.time() - startTime))
 
 if __name__ == '__main__':
-    print __doc__
-    print ""
+    print(__doc__)
+    print("")
     main()

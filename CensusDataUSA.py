@@ -234,4 +234,11 @@ def getCountyList(fn="output/largestCountyIntersection_2004_2014.txt"):
     return countyFips
 
 if __name__ == "__main__":
-    pass
+    import time
+    print("Generating output features in ./output/")
+    startTime = float(time.time())
+
+    for year in range(2009,2014+1):
+        T = getFeatures(year, baseDir="./output/", verbose=True)
+
+    print("Finished generating output features in %0.4f seconds" % (time.time() - startTime))

@@ -27,10 +27,10 @@ import shapely.geometry
 def main():
 
     if len(sys.argv) != 6:
-        print "Usage: python calculateDistanceMatrix.py path/to/inputShapefile.shp shapefileGEOIDKey path/to/inputGEOIDList.txt output/distanceMatrix.npy output/centroidList.csv"
+        print("Usage: python calculateDistanceMatrix.py path/to/inputShapefile.shp shapefileGEOIDKey path/to/inputGEOIDList.txt output/distanceMatrix.npy output/centroidList.csv")
         return 
     
-    print "Starting"
+    print("Starting")
     startTime = float(time.time())
 
     shpFn = sys.argv[1]
@@ -55,20 +55,20 @@ def main():
             lon,lat = geom.centroid.x, geom.centroid.y
             data.append((geoid, lon, lat))
         else:
-            print "GEOID %s not in accepted list" % (geoid)
+            print("GEOID %s not in accepted list" % (geoid))
     sf.close()
 
     # report whether we matched all geoids in the input list
     missingGeoids = acceptedGeoidSet - usedGeoids
     if len(missingGeoids) == 0:
-        print "All GEOIDs from the accepted list were found in the shapefile"
+        print("All GEOIDs from the accepted list were found in the shapefile")
     else:
-        print "The following GEOIDs are in the accepted list, however are not in the shapefile:"
+        print("The following GEOIDs are in the accepted list, however are not in the shapefile:")
         for geoid in missingGeoids:
-            print geoid
+            print(geoid)
 
 
-    print "Loaded %d centroid points in %0.4f seconds" % (len(data), time.time()-startTime)
+    print("Loaded %d centroid points in %0.4f seconds" % (len(data), time.time()-startTime))
     
     data = sorted(data)
 
@@ -84,7 +84,7 @@ def main():
 
     np.save(outputFn,distanceMatrix)
     
-    print "Finished in %0.4f seconds" % (time.time()-startTime)
+    print("Finished in %0.4f seconds" % (time.time()-startTime))
 
 if __name__ == "__main__":
     main()

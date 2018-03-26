@@ -45,18 +45,18 @@ def main():
             if stateCode in CONTINENTAL_STATE_FIPS and countyCode!="000":
                 newFipsSet.add(fips)
 
-        print "%d -- %d counties" % (year, len(newFipsSet)) 
+        print("%d -- %d counties" % (year, len(newFipsSet))( 
         newFipsSets.append(newFipsSet)
 
-    print ""
+    print("")
 
     # calculate the intersection of all sets
     joinedSet = set(newFipsSets[0])
     for s in newFipsSets[1:]:
         joinedSet.intersection_update(s)
-    print "Total of %d locations in continental states that are common to all years of data." % (len(joinedSet))
+    print("Total of %d locations in continental states that are common to all years of data." % (len(joinedSet)))
 
-    print ""
+    print("")
 
     # sort FIPS code in numerical order
     joinedList = {fipsCode:int(fipsCode) for fipsCode in joinedSet}
@@ -64,15 +64,15 @@ def main():
 
     # write output
     outputFn = "output/largestCountyIntersection_2004_2014.txt"
-    print "Saving list of FIPS common to all years of data to %s" % (outputFn)
+    print("Saving list of FIPS common to all years of data to %s" % (outputFn))
     f = open(outputFn, "w")
     for fipsCode in sortedJoinedList:
         f.write("%s\n" % (fipsCode))
     f.close()
     
-    print "Finished"
+    print("Finished")
 
 if __name__ == '__main__':
-    print __doc__
-    print ""
+    print(__doc__)
+    print("")
     main()
