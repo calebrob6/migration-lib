@@ -25,10 +25,10 @@ import shapely.geometry
 def main():
 
     if len(sys.argv) != 3:
-        print "Usage: python calculateDistanceMatrix.py path/to/input.csv output/distanceMatrix.npy"
+        print("Usage: python calculateDistanceMatrix.py path/to/input.csv output/distanceMatrix.npy")
         return 
     
-    print "Starting"
+    print("Starting")
     startTime = float(time.time())
 
     inputFn = sys.argv[1]
@@ -36,7 +36,7 @@ def main():
 
     f = open(inputFn,"r")
     headerline = f.readline().strip().split(",")
-    print "Input file header: %s" % (headerline)
+    print("Input file header: %s" % (headerline))
     data = []
     for line in f:
         line = line.strip()
@@ -51,7 +51,7 @@ def main():
 
     np.save(outputFn,distanceMatrix)
     
-    print "Finished in %0.4f seconds" % (time.time()-startTime)
+    print("Finished in %0.4f seconds" % (time.time()-startTime))
 
 if __name__ == "__main__":
     main()

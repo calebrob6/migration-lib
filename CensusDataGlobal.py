@@ -150,7 +150,6 @@ def processRawWDIData(year, countryCodes=None, verbose=False):
             notRecognizedCodes.add(countryCode)
     f.close()
 
-    #print notRecognizedCodes
     print(countrySet - recognizedCodes)
     assert len(countrySet) - len(recognizedCodes) == 0
 
@@ -191,12 +190,6 @@ def getCommonColumnHumanReadableNames(startYear, endYear, step=10):
         for dataDict in dataDictionaries:
             columnHumanName = dataDict[columnName]
             if columnName in mergedDataDictionary:
-                '''
-                if mergedDataDictionary[columnName].lower() != columnHumanName.lower():
-                    print "Error have: %s\nWas expecting: %s" % (columnHumanName, mergedDataDictionary[columnName])
-                    print "----"
-                    break
-                '''
                 pass
             else:
                 mergedDataDictionary[columnName] = columnHumanName

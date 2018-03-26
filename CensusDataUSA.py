@@ -201,12 +201,6 @@ def getCommonColumnHumanReadableNames(startYear,endYear):
         for dataDict in dataDictionaries:
             columnHumanName = dataDict[columnName]
             if columnName in mergedDataDictionary:
-                '''
-                if mergedDataDictionary[columnName].lower() != columnHumanName.lower():
-                    print "Error have: %s\nWas expecting: %s" % (columnHumanName, mergedDataDictionary[columnName])
-                    print "----"
-                    break
-                '''
                 pass
             else:
                 mergedDataDictionary[columnName] = columnHumanName

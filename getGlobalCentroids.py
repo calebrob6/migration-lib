@@ -14,7 +14,7 @@ import fiona
 #---------------------------------------------------------------------------------------------------
 def main():
     progName = 'Get country centroids'
-    print 'Starting %s' % (progName)
+    print('Starting %s' % (progName))
     startTime = float(time.time())
 
 
@@ -42,7 +42,7 @@ def main():
         f.write("%s,%f,%f\n" % (migrationCode,lon,lat))
     f.close()
 
-    print 'Finished in %0.4f seconds' % (time.time() - startTime)
+    print('Finished in %0.4f seconds' % (time.time() - startTime))
 
 if __name__ == '__main__':
     main()

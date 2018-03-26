@@ -37,7 +37,7 @@ def loadCSV(fn, header=False, DELIM='|', QUOTECHAR=None):
 
 #---------------------------------------------------------------------------------------------------
 def main():
-    print 'Starting global feature data parser'
+    print('Starting global feature data parser')
     startTime = float(time.time())
 
     # this csv file contains a row for each (country, feature) pair, and a column for each year of data
@@ -62,16 +62,16 @@ def main():
     
     # writing the data to file
     for year,rows in dataYears.items():
-        print "Writing file for %s" % (year)
+        print("Writing file for %s" % (year))
         f = open("data/FEATURES/GLOBAL/global_features_%s.csv" % (year), "w")
         f.write("%s|%s\n" % ('|'.join(header[:dataSplit]), year))
         for row in rows:
             f.write("%s\n" % ('|'.join(row)))
         f.close()
    
-    print 'Finished in %0.4f seconds' % (time.time() - startTime)
+    print('Finished in %0.4f seconds' % (time.time() - startTime))
 
 if __name__ == '__main__':
-    print __doc__
-    print ""
+    print(__doc__)
+    print("")
     main()

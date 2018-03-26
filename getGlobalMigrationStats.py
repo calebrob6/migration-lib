@@ -28,8 +28,8 @@ def main():
     f = open("output/GLOBAL/migrationStats.csv","w")
     f.write("Year,Number of countries without outgoing migrants,Number of countries without incoming migrants,Number of countries without incoming or outgoing,Total number of migrants\n")
     for year in years:
-        print "Processing migration matrix for year %d" % (year)
-        print "-" * 50
+        print("Processing migration matrix for year %d" % (year))
+        print("-" * 50)
         
         startTime = float(time.time())
         T = getMigrationMatrix(year,verbose=True)
@@ -43,18 +43,18 @@ def main():
         zeroIncoming = colSums==0
         zeroBoth = zeroOutgoing & zeroIncoming # mask for when a country has 0 outgoing and 0 incoming migrants
 
-        print "Number of countries with no outgoing migrants: \t%d" % zeroOutgoing.sum()
-        print "Number of countries with no incoming migrants: \t%d" % zeroIncoming.sum()
-        print "Number of countries without any migrations:    \t%d" % zeroBoth.sum()
-        print ""
-        print "Total number of migrants: %d" % (T.sum())
+        print("Number of countries with no outgoing migrants: \t%d" % zeroOutgoing.sum())
+        print("Number of countries with no incoming migrants: \t%d" % zeroIncoming.sum())
+        print("Number of countries without any migrations:    \t%d" % zeroBoth.sum())
+        print("")
+        print("Total number of migrants: %d" % (T.sum()))
 
         f.write("%d,%d,%d,%d,%d\n" % (year, zeroOutgoing.sum(), zeroIncoming.sum(), zeroBoth.sum(), T.sum()))
 
         totalNumberOfMigrants.append(T.sum())
 
-        print "Finished loading and saving raw migration data for %d in %0.4f seconds" % (year, time.time()-startTime)
-        print "\n\n"
+        print("Finished loading and saving raw migration data for %d in %0.4f seconds" % (year, time.time()-startTime))
+        print("\n\n")
     f.close()
 
     # Plot the total number of migration trips for each year
@@ -72,6 +72,6 @@ def main():
     plt.close()
 
 if __name__ == '__main__':
-    print __doc__
-    print ""
+    print(__doc__)
+    print("")
     main()
